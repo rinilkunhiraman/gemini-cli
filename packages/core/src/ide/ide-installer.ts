@@ -103,34 +103,7 @@ class VsCodeInstaller implements IdeInstaller {
       };
     }
 
-    const bundleDir = path.dirname(fileURLToPath(import.meta.url));
-    // The VSIX file is copied to the bundle directory as part of the build.
-    let vsixFiles = glob.sync(path.join(bundleDir, '*.vsix'));
-    if (vsixFiles.length === 0) {
-      // If the VSIX file is not in the bundle, it might be a dev
-      // environment running with `npm start`. Look for it in the original
-      // package location, relative to the bundle dir.
-      const devPath = path.join(
-        bundleDir, // .../packages/core/dist/src/ide
-        '..', // .../packages/core/dist/src
-        '..', // .../packages/core/dist
-        '..', // .../packages/core
-        '..', // .../packages
-        VSCODE_COMPANION_EXTENSION_FOLDER,
-        '*.vsix',
-      );
-      vsixFiles = glob.sync(devPath);
-    }
-    if (vsixFiles.length === 0) {
-      return {
-        success: false,
-        message:
-          'Could not find the required VS Code companion extension. Please file a bug via /bug.',
-      };
-    }
-
-    const vsixPath = vsixFiles[0];
-    const command = `"${commandPath}" --install-extension "${vsixPath}" --force`;
+    const command = `"${commandPath}" --install-extension google.gemini-cli-vscode-ide-companion --force`;
     try {
       child_process.execSync(command, { stdio: 'pipe' });
       return {
@@ -149,19 +122,18 @@ class VsCodeInstaller implements IdeInstaller {
 
 class OpenVSXInstaller implements IdeInstaller {
   async install(): Promise<InstallResult> {
-    // TODO: Use the correct extension path.
     const command = `npx ovsx get google.gemini-cli-vscode-ide-companion`;
     try {
       child_process.execSync(command, { stdio: 'pipe' });
       return {
         success: true,
         message:
-          'VS Code companion extension was installed successfully from OpenVSX. Please restart your terminal to complete the setup.',
+          'Companion extension was installed successfully from OpenVSX. Please restart your terminal to complete the setup.',
       };
     } catch (_error) {
       return {
         success: false,
-        message: `Failed to install VS Code companion extension from OpenVSX. Please try installing it manually.`,
+        message: `Failed to install companion extension from OpenVSX. Please try installing it manually from the marketplace.`,
       };
     }
   }
