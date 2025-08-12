@@ -91,7 +91,7 @@ describe('ide-installer', () => {
         );
         expect(result.success).toBe(true);
         expect(result.message).toContain(
-          'VS Code companion extension was installed successfully from OpenVSX',
+          'Companion extension was installed successfully from OpenVSX',
         );
       });
 
@@ -102,7 +102,7 @@ describe('ide-installer', () => {
         const result = await installer.install();
         expect(result.success).toBe(false);
         expect(result.message).toContain(
-          'Failed to install VS Code companion extension from OpenVSX',
+          'Failed to install companion extension from OpenVSX',
         );
       });
     });
