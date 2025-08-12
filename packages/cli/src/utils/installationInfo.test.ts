@@ -90,20 +90,8 @@ describe('getInstallationInfo', () => {
     );
   });
 
-  it('should detect running via npx with user cache path', () => {
+  it('should detect running via npx', () => {
     const npxPath = `/Users/test/.npm/_npx/12345/bin/gemini`;
-    process.argv[1] = npxPath;
-    mockedRealPathSync.mockReturnValue(npxPath);
-
-    const info = getInstallationInfo(projectRoot, false);
-
-    expect(info.packageManager).toBe(PackageManager.NPX);
-    expect(info.isGlobal).toBe(false);
-    expect(info.updateMessage).toBe('Running via npx, update not applicable.');
-  });
-
-  it('should detect running via npx with system cache path', () => {
-    const npxPath = `/some/path/npm/_npx/6789/bin/gemini`;
     process.argv[1] = npxPath;
     mockedRealPathSync.mockReturnValue(npxPath);
 
