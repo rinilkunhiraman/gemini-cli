@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Box, Text, useInput } from 'ink';
+import { Box, Text } from 'ink';
 import {
   RadioButtonSelect,
   RadioSelectItem,
 } from './components/shared/RadioButtonSelect.js';
+import { useKeypress } from './hooks/useKeypress.js';
 
 export type IdeIntegrationNudgeResult = 'yes' | 'no' | 'dismiss';
 
@@ -21,11 +22,14 @@ export function IdeIntegrationNudge({
   ideName,
   onComplete,
 }: IdeIntegrationNudgeProps) {
-  useInput((_input, key) => {
-    if (key.escape) {
-      onComplete('no');
-    }
-  });
+  useKeypress(
+    (key) => {
+      if (key.name === 'escape') {
+        onComplete('no');
+      }
+    },
+    { isActive: true },
+  );
 
   const OPTIONS: Array<RadioSelectItem<IdeIntegrationNudgeResult>> = [
     {
